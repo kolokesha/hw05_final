@@ -1,23 +1,14 @@
-import shutil
-import tempfile
-
 from django.contrib.auth import get_user_model
-from django.urls import reverse
-from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.urls import reverse
 
-from ..models import Post, Comment
+from ..models import Comment, Post
 from .SetUp import SetUp
-from ..forms import PostForm
 
 User = get_user_model()
 
 
 class PostCreateFormTest(SetUp):
-
-    # def tearDownClass(self):
-    #     super().tearDownClass()
-    #     shutil.rmtree(self.TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def test_post_create(self):
         post_count = Post.objects.count()
@@ -65,13 +56,12 @@ class PostCreateFormTest(SetUp):
         form_data = {
             'text': 'Текст комментария'
         }
-        response = self.authorized_client.post(
-            reverse('posts:post_detail', kwargs={'post_id': self.post.pk}),
+        self.authorized_client.post(
+            reverse('posts:add_comment', kwargs={'post_id': self.post.pk}),
             data=form_data,
             follow=True
         )
-        print(Comment.objects.get(pk=1).text)
-        # self.assertEqual(Comment.objects.count(), comments_count + 1)
+        self.assertEqual(Comment.objects.count(), comments_count + 1)
         self.assertTrue(
             Comment.objects.filter(
                 post=self.post,
@@ -100,7 +90,7 @@ class PostCreateFormTest(SetUp):
             'text': 'ну тест и что',
             'image': uploaded
         }
-        response = self.authorized_client.post(
+        self.authorized_client.post(
             reverse('posts:post_create'),
             data=form_data,
             follow=True

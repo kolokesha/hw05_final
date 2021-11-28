@@ -1,8 +1,8 @@
-from .SetUp import SetUp
-from ..models import Post
+from django.core.cache import cache
 from django.urls import reverse
 
-from django.core.cache import cache
+from ..models import Post
+from .SetUp import SetUp
 
 
 class CacheTests(SetUp):

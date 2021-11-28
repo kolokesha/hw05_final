@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
 from django.db import models
 from django.db.models import constraints
+from django.shortcuts import get_object_or_404
 
 User = get_user_model()
 
@@ -90,8 +90,7 @@ class Follow(models.Model):
 
     @staticmethod
     def add_follow(follower, following):
-        new_follow = Follow(user=follower, author=following)
-        new_follow.save()
+        Follow.objects.get_or_create(user=follower, author=following)
 
     @staticmethod
     def del_follow(follower, following):

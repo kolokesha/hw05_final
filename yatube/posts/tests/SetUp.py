@@ -1,13 +1,13 @@
 import shutil
 import tempfile
 
-from django.contrib.auth import get_user_model
-from django.test import Client, TestCase
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.cache import cache
+from django.test import Client, TestCase
 
-from ..models import Group, Post, Comment,Follow
-from ..forms import PostForm, CommentForm
+from ..forms import CommentForm, PostForm
+from ..models import Comment, Follow, Group, Post
 
 User = get_user_model()
 

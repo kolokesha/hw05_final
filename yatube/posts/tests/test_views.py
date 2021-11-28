@@ -1,9 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from django.core.cache import cache
 
-from ..models import Group, Post, Follow
+from ..models import Follow, Group, Post
 from ..views import COUNT_PER_PAGE
 from .SetUp import SetUp
 
