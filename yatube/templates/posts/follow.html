@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}
+   Последние посты избранных авторов
+{% endblock %}
+{% block content %}
+  <div class="container">
+    <h1>Последние посты избранных авторов</h1>
+  {% include 'posts/includes/switcher.html' %}
+      {% for post in page_obj %}
+        {% include 'includes/post_article.html' %}
+        {% if not forloop.last %}
+          <hr>
+        {% endif %}
+      {% empty %}
+        <p>Пока записей нет, но скоро будут</p>
+      {% endfor %}
+    {% include 'posts/includes/paginator.html' %}
+  </div>
+{% endblock %}

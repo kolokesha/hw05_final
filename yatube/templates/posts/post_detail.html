@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}
+  Пост {{ post|slice:"30" }}
+{% endblock %}
+{% block content %}
+  <div class="container">
+    {% include 'includes/post_article.html' %}
+    {% include 'includes/post_comments.html' %}
+  </div>
+{% endblock %}

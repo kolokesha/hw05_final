@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Обо мне{% endblock %}
+{% block content %}
+  <div class="container">
+    <h1>Portfolio and social media</h1>
+    <hr>
+    <div class="row">
+      <div class="col-12 col-md-3">
+        <div class="content">
+          <img src="{% static 'img/LICENSE.png' %}" alt="" style="width:200px">
+          <h3>
+            <a href="https://github.com/kolokesha">GitHub</a>
+          </h3>
+
+
+          <p>
+            Это мой профиль на GitHub, там можно посмотреть мои актуальные проекты.
+          </p>
+
+
+        </div>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <div class="content">
+          <img src=
+                       "{% static 'img/images.png' %}"
+               alt="" style="width:120px">
+          <h3>
+            <a href="https://www.linkedin.com/in/%D0%B0%D0%BB%D0%B5%D0%BA%D1%81%D0%B5%D0%B9-%D0%BA%D0%BE%D0%BB%D0%BE%D0%BC%D0%B5%D0%B9%D1%86%D0%B5%D0%B2-40a5541a1/">Моё
+              резюме</a>
+          </h3>
+
+
+          <p>
+            Здесь можно посмотреть опыт моей работы, навыки и личные качества
+          </p>
+
+
+        </div>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <div class="content">
+          <img src="{% static 'img/telegram.png' %}"
+               alt="" style="width:120px">
+          <h3>
+            <a href="https://t.me/kolokesha">Telegram</a>
+          </h3>
+
+
+          <p>
+            Ссылка на мой телеграм для оперативной связи
+          </p>
+
+
+        </div>
+      </div>
+
+      <div class="col-12 col-md-3">
+        <div class="content">
+          <img src=
+                       "{% static 'img/inst3.png' %}"
+               alt="" style="width:120px">
+          <h3>
+            <a href="https://www.instagram.com/show_me_your__soul/">Instagram</a>
+          </h3>
+
+
+          <p>
+            Котики, концерты и просто приятные моменты моей жизни
+          </p>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

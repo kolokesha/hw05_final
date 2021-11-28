@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}
+  Сообщества
+{% endblock %}
+{% block content %}
+  <div class="container">
+    <h1>
+      Здесь расположены все сообщества
+    </h1>
+    <ul>
+      {% for group in groups %}
+        <li>
+          <a href="{% url 'posts:group_posts' group.slug %}">{{ group.title }}</a>
+        </li>
+
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
