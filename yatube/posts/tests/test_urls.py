@@ -2,7 +2,6 @@ from http import HTTPStatus
 
 from django.contrib.auth import get_user_model
 
-from ..models import Follow
 from .SetUp import SetUp
 
 User = get_user_model()
