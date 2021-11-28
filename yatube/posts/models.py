@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.db import models
+from django.db.models import constraints
 
 User = get_user_model()
 
@@ -96,4 +97,10 @@ class Follow(models.Model):
     def del_follow(follower, following):
         del_follow = get_object_or_404(Follow, user=follower, author=following)
         del_follow.delete()
+
+    class Meta:
+        constraints = (
+            constraints.UniqueConstraint(
+                fields=('user', 'author'), name='follow_unique'),
+        )
 
