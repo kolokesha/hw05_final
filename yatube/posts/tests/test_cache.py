@@ -8,14 +8,12 @@ from .SetUp import SetUp
 class CacheTests(SetUp):
 
     def test_cache_correct(self):
-        response = self.authorized_client.get(reverse('posts:index'))
-        Post.objects.all().delete()
-        self.assertEqual(response.content,
-                         self.authorized_client.get(
-                             reverse('posts:index')).content
-                         )
+        response = self.client.get(reverse('posts:index'))
+        post_1 = response.context['page_obj'][0]
+        self.post.delete()
+        post_2 = response.context['page_obj'][0]
+        self.assertEqual(post_2, post_1)
         cache.clear()
-        self.assertNotEqual(response.content,
-                            self.authorized_client.get(
-                                reverse('posts:index')).content
-                            )
+        response = self.client.get(reverse('posts:index'))
+        post_3 = response.context['page_obj'][0]
+        self.assertNotEqual(post_3, post_1)

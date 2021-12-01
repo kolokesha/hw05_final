@@ -130,6 +130,8 @@ class FollowViewsTests(SetUp):
     def test_follow_create(self):
         """Проверка подписки на автора авторизованным пользователем
         """
+        self.assertFalse(Follow.objects.filter(
+            user=self.user_author, author=self.user_follower).exists())
         response = self.authorized_client.get(reverse(
             'posts:profile_follow', kwargs={'username': self.user_follower})
         )
@@ -146,6 +148,8 @@ class FollowViewsTests(SetUp):
         self.authorized_client.get(reverse(
             'posts:profile_follow', kwargs={'username': self.user_follower})
         )
+        self.assertTrue(Follow.objects.filter(
+            user=self.user_author, author=self.user_follower).exists())
         response = self.authorized_client.get(reverse(
             'posts:profile_unfollow',
             kwargs={'username': self.user_follower}))
@@ -162,5 +166,10 @@ class FollowViewsTests(SetUp):
             'posts:profile_follow', kwargs={'username': self.user_follower}))
         response_follower = self.authorized_client.get(
             reverse('posts:follow_index'))
+        response_not_follower = self.follower.get(
+            reverse('posts:follow_index'))
         self.assertEqual(
             response_follower.context['posts'][0].text, self.post_author.text)
+        self.assertNotEqual(response_not_follower.context['posts'][0].text,
+                            self.post_author.text)
+

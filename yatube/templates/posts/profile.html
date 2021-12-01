@@ -6,6 +6,7 @@
   <div class="container">
     <h1>Все посты пользователя {{ author }} </h1>
     <h3>Всего постов: {{ posts_count }} </h3>
+  {% if author.username != request.user.username %}
     {% if following %}
       <a
               class="btn btn-lg btn-light"
@@ -21,6 +22,7 @@
         Подписаться
       </a>
     {% endif %}
+  {% endif %}
     {% for post in page_obj %}
       {% include 'includes/post_article.html' %}
       <a href="{% url 'posts:post_detail' post.pk %}">подробная информация </a>

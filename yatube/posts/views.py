@@ -14,6 +14,10 @@ def get_page_obj(request, model):
         model_list = model.posts.all()
     else:
         model_list = model.objects.all()
+    return get_page_obj_by_model_list(model_list,  request)
+
+
+def get_page_obj_by_model_list(model_list, request):
     paginator = Paginator(model_list, COUNT_PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -56,14 +60,12 @@ def group_list(request):
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     post_list = author.posts.all()
-    paginator = Paginator(post_list, COUNT_PER_PAGE)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    page_obj = get_page_obj_by_model_list(post_list, request)
     count = post_list.count()
 
-    if request.user.is_authenticated:
-        following = Follow.objects.filter(
-            user=request.user, author=author).exists()
+    if request.user.is_authenticated and Follow.objects.filter(
+            user=request.user, author=author).exists():
+        following = True
     else:
         following = False
 
@@ -147,9 +149,7 @@ def add_comment(request, post_id):
 @login_required
 def follow_index(request):
     follower_posts = Post.objects.filter(author__following__user=request.user)
-    paginator = Paginator(follower_posts, COUNT_PER_PAGE)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    page_obj = get_page_obj_by_model_list(follower_posts, request)
     context = {
         'page_obj': page_obj,
         'posts': follower_posts,

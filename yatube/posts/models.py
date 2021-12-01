@@ -94,11 +94,10 @@ class Follow(models.Model):
 
     @staticmethod
     def del_follow(follower, following):
-        del_follow = get_object_or_404(Follow, user=follower, author=following)
-        del_follow.delete()
+        Follow.objects.filter(user=follower, author=following).delete()
 
     class Meta:
         constraints = (
-            constraints.UniqueConstraint(
+            models.UniqueConstraint(
                 fields=('user', 'author'), name='follow_unique'),
         )
