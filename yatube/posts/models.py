@@ -1,7 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.db.models import constraints
-from django.shortcuts import get_object_or_404
 
 User = get_user_model()
 

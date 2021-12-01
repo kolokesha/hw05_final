@@ -1,7 +1,6 @@
 from django.core.cache import cache
 from django.urls import reverse
 
-from ..models import Post
 from .SetUp import SetUp
 
 

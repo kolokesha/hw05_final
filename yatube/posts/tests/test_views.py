@@ -172,4 +172,3 @@ class FollowViewsTests(SetUp):
             response_follower.context['posts'][0].text, self.post_author.text)
         self.assertNotEqual(response_not_follower.context['posts'][0].text,
                             self.post_author.text)
-

@@ -14,7 +14,7 @@ def get_page_obj(request, model):
         model_list = model.posts.all()
     else:
         model_list = model.objects.all()
-    return get_page_obj_by_model_list(model_list,  request)
+    return get_page_obj_by_model_list(model_list, request)
 
 
 def get_page_obj_by_model_list(model_list, request):
