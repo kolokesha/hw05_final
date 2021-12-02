@@ -52,10 +52,24 @@ class PostCreateFormTest(SetUp):
         )
 
     def test_comments(self):
+        """Тест на проверку добавления коммента авторизованным и
+        неавторизванным пользователем"""
         comments_count = Comment.objects.count()
         form_data = {
             'text': 'Текст комментария'
         }
+        self.guest_client.post(
+            reverse('posts:add_comment', kwargs={'post_id': self.post.pk}),
+            data=form_data,
+            follow=True
+        )
+        self.assertNotEqual(Comment.objects.count(), comments_count + 1)
+        self.assertFalse(
+            Comment.objects.filter(
+                post=self.post,
+                text=form_data['text'],
+                author=self.guest
+            ).exists())
         self.authorized_client.post(
             reverse('posts:add_comment', kwargs={'post_id': self.post.pk}),
             data=form_data,

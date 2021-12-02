@@ -30,6 +30,7 @@ class SetUp(TestCase):
         )
         cls.user_author = User.objects.create_user(username='HasNoName')
         cls.user_follower = User.objects.create_user(username='Follower')
+        cls.guest = User.objects.create_user(username='Guest')
         cls.post_author = Post.objects.create(
             author=cls.user_follower,
             text='ещё одинтест'
@@ -39,7 +40,6 @@ class SetUp(TestCase):
             text='ну тест и что',
             group=cls.group
         )
-
         cls.comment = Comment.objects.create(
             author=cls.user_author,
             post=cls.post,
@@ -58,7 +58,7 @@ class SetUp(TestCase):
         shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def setUp(self):
-        self.guest_client = Client()
+        self.guest_client = Client(self.guest)
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user_author)
         self.follower = Client()
