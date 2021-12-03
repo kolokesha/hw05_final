@@ -128,8 +128,8 @@ class PaginatorViewsTest(SetUp):
 class FollowViewsTests(SetUp):
 
     def test_follow_create(self):
-        """Проверка подписки на автора авторизованным пользователем
-        """
+        """Проверка существования подписки на автора
+        авторизованным пользователем"""
         self.assertFalse(Follow.objects.filter(
             user=self.user_author, author=self.user_follower).exists())
         response = self.authorized_client.get(reverse(
@@ -145,9 +145,7 @@ class FollowViewsTests(SetUp):
     def test_unfollow(self):
         """Тест отписки от автора """
 
-        self.authorized_client.get(reverse(
-            'posts:profile_follow', kwargs={'username': self.user_follower})
-        )
+        Follow.objects.create(user=self.user_author, author=self.user_follower)
         self.assertTrue(Follow.objects.filter(
             user=self.user_author, author=self.user_follower).exists())
         response = self.authorized_client.get(reverse(
@@ -160,15 +158,19 @@ class FollowViewsTests(SetUp):
         self.assertFalse(Follow.objects.filter(
             user=self.user_author, author=self.user_follower).exists())
 
-    def test_follow_index(self):
-        """ Тест списка постов follow"""
-        self.authorized_client.get(reverse(
-            'posts:profile_follow', kwargs={'username': self.user_follower}))
+    def test_follow_index_by_follower(self):
+        """ Тест списка постов follow подписчиком"""
+        Follow.objects.get_or_create(user=self.user_author,
+                                     author=self.user_follower)
         response_follower = self.authorized_client.get(
             reverse('posts:follow_index'))
+
+        self.assertIn(
+            self.post_author, response_follower.context['page_obj'], )
+
+    def test_follow_by_not_follower(self):
+        """ Тест списка постов follow не подписчиком"""
         response_not_follower = self.follower.get(
             reverse('posts:follow_index'))
-        self.assertEqual(
-            response_follower.context['posts'][0].text, self.post_author.text)
-        self.assertNotEqual(response_not_follower.context['posts'][0].text,
-                            self.post_author.text)
+        self.assertNotIn(self.post_author,
+                         response_not_follower.context['page_obj'])

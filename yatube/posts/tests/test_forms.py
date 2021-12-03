@@ -51,9 +51,30 @@ class PostCreateFormTest(SetUp):
             ).exists()
         )
 
-    def test_comments(self):
+    def test_comments_by_authorize_user(self):
         """Тест на проверку добавления коммента авторизованным и
         неавторизванным пользователем"""
+        comments_count = Comment.objects.count()
+        form_data = {
+            'text': 'Текст комментария'
+        }
+        self.authorized_client.post(
+            reverse('posts:add_comment', kwargs={'post_id': self.post.pk}),
+            data=form_data,
+            follow=True
+        )
+        self.assertEqual(Comment.objects.count(), comments_count + 1)
+        self.assertTrue(
+            Comment.objects.filter(
+                post=self.post,
+                text=form_data['text'],
+                author=self.user_author
+            ).exists()
+        )
+
+    def test_comment_by_anonymous_user(self):
+        """Тест на проверку добавления коммента
+                неавторизванным пользователем"""
         comments_count = Comment.objects.count()
         form_data = {
             'text': 'Текст комментария'
@@ -70,23 +91,10 @@ class PostCreateFormTest(SetUp):
                 text=form_data['text'],
                 author=self.guest
             ).exists())
-        self.authorized_client.post(
-            reverse('posts:add_comment', kwargs={'post_id': self.post.pk}),
-            data=form_data,
-            follow=True
-        )
-        self.assertEqual(Comment.objects.count(), comments_count + 1)
-        self.assertTrue(
-            Comment.objects.filter(
-                post=self.post,
-                text=form_data['text'],
-                author=self.user_author
-            ).exists()
-        )
 
     def test_post_with_image(self):
-        post_count = Post.objects.count()
         """Проверка на создание поста в БД c изображением"""
+        post_count = Post.objects.count()
         small_gif = (
             b'\x47\x49\x46\x38\x39\x61\x02\x00'
             b'\x01\x00\x80\x00\x00\x00\x00\x00'

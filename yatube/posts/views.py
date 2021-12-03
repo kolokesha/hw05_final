@@ -63,11 +63,8 @@ def profile(request, username):
     page_obj = get_page_obj_by_model_list(post_list, request)
     count = post_list.count()
 
-    if request.user.is_authenticated and Follow.objects.filter(
-            user=request.user, author=author).exists():
-        following = True
-    else:
-        following = False
+    following = request.user.is_authenticated and Follow.objects.filter(
+            user=request.user, author=author).exists()
 
     template = 'posts/profile.html'
     context = {
