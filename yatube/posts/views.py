@@ -64,7 +64,7 @@ def profile(request, username):
     count = post_list.count()
 
     following = request.user.is_authenticated and Follow.objects.filter(
-            user=request.user, author=author).exists()
+        user=request.user, author=author).exists()
 
     template = 'posts/profile.html'
     context = {
